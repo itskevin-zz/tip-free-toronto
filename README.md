@@ -1,288 +1,207 @@
-Given the Reddit test, I’d change the V1 from a polished directory into a very lightweight crowdsourced dataset. The goal is to make the behaviours we care about measurable.
+# Tip-Free Toronto
 
-The biggest changes:
+A crowdsourced map of Toronto restaurants where tipping is not expected or service is included.
 
-Make “Add a place” much more prominent. It should probably be a persistent button on the map. The form should be extremely short:
-Restaurant name
-Location/address
-Tipping model: No tipping / Service included / Not sure
-“How do you know?” — visited recently / website / employee / other
-Optional source URL
+The project is a lightweight static web application designed to make it easy to discover, verify, and contribute information about restaurant tipping policies.
 
-Make verification the primary action on every restaurant. Instead of a generic confidence score, show something concrete:
+## Features
 
-Richmond Station
-No tipping
-Last confirmed 12 days ago
-[Still accurate] [This has changed]
+- Interactive map of Toronto restaurants
+- List and map views
+- Filter restaurants by tipping model
+- Structured restaurant detail pages
+- Community verification of existing information
+- Structured reporting when a restaurant's policy changes
+- Submission form for adding new places
+- Verification history for each restaurant
+- Freshness indicators based on recent reports
+- Basic event tracking for usage analysis
+- UTM source tracking
+- Responsive layout for desktop and mobile
 
-Then underneath: “Confirmed by 8 people.”
+## Tipping Models
 
-That's both more understandable and more useful crowdsourcing behaviour.
+Restaurants can currently be classified as:
 
-Add freshness as a first-class concept. A place confirmed yesterday should look different from something last confirmed 18 months ago.
+- `no_tip` — tipping is not expected
+- `service_included` — service is included in the listed price or bill
+- `unknown` — the tipping model has not been confirmed
 
-I’d use:
+The taxonomy can be extended as additional tipping models emerge from contributed data.
 
-Confirmed — verified within 90 days
-Getting stale — 3–12 months
-Needs verification — 12+ months
-Disputed — conflicting reports
+## Verification Status
 
-This creates something for Redditors to actually do when they arrive.
+Restaurant status is derived from community reports rather than a manually assigned confidence score.
 
-Remove anything that feels like Yelp. No reviews, stars, “confidence 87%”, restaurant descriptions, etc. The restaurant page should answer essentially:
+The interface uses the date and consistency of reports to indicate how current the information is.
 
-Does this place expect tips?
+Typical states include:
 
-How does it work?
+- **Confirmed** — recently verified
+- **Getting stale** — verification is several months old
+- **Needs verification** — information has not been confirmed recently
+- **Disputed** — recent reports conflict
 
-When was that last confirmed?
+Users can confirm an existing policy with **Still accurate** or submit a structured report using **This has changed**.
 
-What evidence do we have?
+## Data Model
 
-Show the evidence/history. This is probably the biggest addition I'd make after thinking about those Reddit threads.
+The mock data layer separates restaurants from reports.
 
-For example:
+### Restaurant
 
-Recent reports
-
-Sept 18 · Still no-tip · Visited in person
-Aug 3 · Still no-tip · Visited in person
-May 14 · Service included · Restaurant website
-
-That makes the dataset inspectable rather than asking users to trust whoever runs the site.
-
-Let someone correct data in ~2 clicks. Clicking “This has changed” could immediately ask:
-
-What did you encounter?
-
-○ Tip expected
-○ Tip prompt shown
-○ Service charge added
-○ Something else
-
-Submit.
-
-Add one tiny bit of social proof to the homepage.
-
-Instead of marketing copy:
-
-Tip-free Toronto
-
-A crowdsourced map of Toronto restaurants where tipping isn't expected.
-
-37 places · 84 confirmations · Updated today
-
-Those numbers should come directly from the JSON.
-
-Instrument the experiment. This is important. I'd add lightweight analytics events for:
-
-map_loaded
-restaurant_opened
-confirmation_started
-restaurant_confirmed
-change_reported
-add_place_started
-place_submitted
-
-And capture utm_source=reddit so you can isolate the Reddit experiment.
-
-The mock backend should change as well. Rather than a restaurant having a manually assigned confidence value, I'd model restaurants + reports:
-
+```json
 {
-  "restaurants": [
-    {
-      "id": "r001",
-      "name": "Example Restaurant",
-      "address": "123 Queen St W",
-      "lat": 43.65,
-      "lng": -79.39,
-      "status": "no_tip"
-    }
-  ],
-
-  "reports": [
-    {
-      "id": "report001",
-      "restaurantId": "r001",
-      "status": "no_tip",
-      "evidence": "visited",
-      "date": "2026-09-18"
-    },
-    {
-      "id": "report002",
-      "restaurantId": "r001",
-      "status": "no_tip",
-      "evidence": "website",
-      "sourceUrl": "https://...",
-      "date": "2026-08-03"
-    }
-  ]
+  "id": "r001",
+  "name": "Example Restaurant",
+  "address": "123 Queen St W",
+  "lat": 43.65,
+  "lng": -79.39,
+  "status": "no_tip"
 }
+```
 
-Then the UI derives “Last confirmed Sept 18 · 2 confirmations” from the reports rather than storing that as restaurant metadata.
+### Report
 
-The most important conceptual change is that I'd make the site feel unfinished on purpose. Don't try to demonstrate that we've already built the definitive Toronto no-tip database.
-
-When someone arrives from Reddit, I want them to immediately think:
-
-“Oh, they don't have X.”
-
-…and then see Add a place.
-
-Or:
-
-“That's wrong. They started asking for tips again.”
-
-…and see Report change.
-
-Those are precisely the behaviours the Reddit experiment needs to measure. If people browse but don't contribute, that's useful information too.
-
-make those change
-
-Updated the V1 around the Reddit validation experiment.
-
-Download the updated GitHub-ready ZIP
-
-The main changes are: prominent “Add a place”, one-click “Still accurate”, structured “This has changed” reporting, freshness states instead of artificial confidence scores, a visible evidence/report history, separate restaurant + report JSON data, and basic funnel event instrumentation including utm_source=reddit.
-
-One limitation remains intentional: because this is still static, submissions are stored in the visitor’s browser. Before actually posting to Reddit, I’d make one more change: add a tiny shared backend such as Supabase so everyone sees everyone else’s contributions. Otherwise we won’t actually be testing whether the community can maintain the dataset.
-
-Today 9:05 AM
-rewrite the README.md to read like a proper readme from a dev. not the evoluation of our conversation. Dont reference the requests for changes in the new write up. just the facts on the repo
-
-Rewritten as a conventional developer-facing README: project purpose, features, data model, persistence, analytics, project structure, local setup, deployment, and production considerations.
-
-Download the revised README.md
-
-Download the updated repository ZIP
-
-README.md
-Document
-
-Library
-/
-README.md
-Tip-Free Toronto
-
-A lightweight, crowdsourced map of Toronto restaurants where tipping is not expected or service is included.
-
-The application focuses on maintaining a current, structured dataset rather than restaurant reviews. Visitors can browse restaurants on a map, confirm that a listed tipping policy is still accurate, report a change, or submit a new place.
-
-Features
-Interactive map and restaurant list
-Tipping-model classification for each restaurant
-One-click confirmation that a listing is still accurate
-Structured change reporting
-New-place submissions
-Freshness states based on the age of community reports
-Evidence history with report date, evidence type, and optional source URL
-URL-based source attribution using utm_source
-Lightweight interaction event tracking
-Responsive layout for desktop and mobile
-
-The repository ships with fictional sample restaurant data for development and demonstration purposes.
-
-Data model
-
-Application data lives in data/restaurants.json and is separated into two collections: restaurants and reports.
-
-A restaurant contains the stable information needed to place and identify it on the map. Reports form an append-only history of confirmations and changes to its tipping policy.
-
-Example:
-
+```json
 {
-  "restaurants": [
-    {
-      "id": "r001",
-      "name": "Example Restaurant",
-      "address": "123 Queen St W",
-      "lat": 43.65,
-      "lng": -79.39,
-      "status": "no_tip"
-    }
-  ],
-  "reports": [
-    {
-      "id": "report001",
-      "restaurantId": "r001",
-      "status": "no_tip",
-      "evidence": "visited",
-      "date": "2026-09-18"
-    }
-  ]
+  "id": "report001",
+  "restaurantId": "r001",
+  "status": "no_tip",
+  "evidence": "visited",
+  "sourceUrl": null,
+  "date": "2026-09-18"
 }
+```
 
-Freshness and verification information displayed in the UI is derived from the report history rather than stored as a manually assigned confidence score.
+Reports provide the underlying evidence used to calculate the restaurant's current status, verification count, and freshness.
 
-Persistence
+## Contributions
 
-The repository is a static prototype and does not require a server-side application.
+Users can contribute in three ways.
 
-Initial data is loaded from data/restaurants.json. User-created places, confirmations, and change reports are persisted in browser localStorage under tft-data.
+### Confirm a Restaurant
 
-Because storage is local to each browser, user contributions are not shared between visitors. A shared database or API is required for multi-user persistence in a deployed version.
+Selecting **Still accurate** records a new confirmation for the restaurant's current tipping policy.
 
-Analytics
+### Report a Change
 
-Interaction events are recorded in browser localStorage under tft-analytics and logged to the browser console.
+Users can report what they encountered, including:
+
+- Tip expected
+- Tip prompt shown
+- Service charge added
+- Other changes
+
+### Add a Place
+
+New restaurant submissions include:
+
+- Restaurant name
+- Address
+- Tipping model
+- Evidence source
+- Optional source URL
+
+## Persistence
+
+The current implementation uses static JSON for seed data and browser storage for user-generated contributions.
+
+There is no shared database in this version. Contributions made in one browser are not visible to other users.
+
+For a production deployment, the local persistence layer should be replaced with a shared backend such as Supabase, Firebase, or a conventional API/database.
+
+## Analytics
+
+The application includes lightweight event instrumentation for key interactions.
 
 Tracked events include:
 
+```text
 map_loaded
 restaurant_opened
 confirmation_started
 restaurant_confirmed
-change_report_started
 change_reported
 add_place_started
 place_submitted
+```
 
-The event payload also captures the utm_source query parameter when present. For example:
+UTM parameters are preserved so traffic from specific sources can be identified, for example:
 
-https://example.com/?utm_source=reddit
+```text
+?utm_source=reddit
+```
 
-The included event tracking is local only. Connect track() in app.js to an analytics provider or API endpoint to collect aggregate usage data across visitors.
+The event layer can be connected to an analytics provider such as Plausible, PostHog, Google Analytics, or another event collection service.
 
-Project structure
-.
+## Project Structure
+
+```text
+notip-toronto-v1/
 ├── index.html
 ├── styles.css
 ├── app.js
 ├── README.md
 └── data/
     └── restaurants.json
-index.html contains the application shell and contribution dialogs.
-styles.css contains the responsive interface styles.
-app.js handles the map, filtering, freshness calculation, report history, submissions, local persistence, and analytics events.
-data/restaurants.json contains the seed restaurant and report data.
-Running locally
+```
 
-The application loads its JSON data over HTTP, so serve the repository rather than opening index.html directly from the filesystem.
+## Running Locally
+
+Because the application loads JSON using `fetch`, serve the repository through a local HTTP server rather than opening `index.html` directly.
 
 Using Python:
 
+```bash
 python3 -m http.server 8000
+```
 
 Then open:
 
+```text
 http://localhost:8000
+```
 
-No package installation or build step is required.
+Alternatively, use any static development server.
 
-Deployment
-GitHub Pages
-Push the repository contents to GitHub.
-Open the repository's Settings > Pages.
-Set the source to Deploy from a branch.
-Select the deployment branch and / (root) directory.
-Save the configuration.
+## Deployment
 
-The site can be served directly from GitHub Pages because all application code is static.
+The application does not require a build process and can be hosted on any static hosting provider.
 
-Production considerations
+Suitable options include:
 
-For a public multi-user deployment, replace the localStorage persistence layer with a shared backend while retaining the existing restaurant/report model. The client-side event tracker can similarly be connected to an analytics service or first-party endpoint.
+- GitHub Pages
+- Netlify
+- Vercel
+- Cloudflare Pages
 
-Public restaurant data should be independently verified before being added to the seed dataset.
+For GitHub Pages, publish the repository root as the site source.
+
+## Production Considerations
+
+Before using the application as a persistent public dataset, the following infrastructure should be added:
+
+- Shared database for restaurants and reports
+- Server-side validation
+- Duplicate restaurant detection
+- Submission moderation
+- Rate limiting and abuse protection
+- Authentication or anonymous contributor identifiers if needed
+- Geocoding for submitted addresses
+- Automated freshness calculations
+- Conflict resolution for contradictory reports
+- Production analytics
+- Error monitoring
+
+## Data Accuracy
+
+Restaurant tipping policies can change.
+
+The application treats restaurant information as community-maintained data and exposes verification history so users can assess how recently a policy was confirmed.
+
+Seed records should be independently verified before being presented as factual information about real businesses.
+
+## Licence
+
+No licence has been specified for this repository.

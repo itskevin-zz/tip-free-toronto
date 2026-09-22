@@ -58,6 +58,13 @@ function info(r) {
   else if (ageDays(last) <= 365) freshness = "stale";
   return { rr, supportive, conflicting, last, freshness };
 }
+function directionsUrl(r) {
+  const dest =
+    r.lat && r.lng
+      ? `${r.lat},${r.lng}`
+      : encodeURIComponent(`${r.name}, ${r.address}, Toronto`);
+  return `https://www.google.com/maps/dir/?api=1&destination=${dest}`;
+}
 const statusLabel = (s) =>
   ({
     fresh: "CONFIRMED RECENTLY",
@@ -121,7 +128,7 @@ function render() {
     rows
       .map((r) => {
         const i = info(r);
-        return `<article class="card" data-id="${r.id}"><div class="card-top"><div><div class="meta">${r.neighbourhood}</div><h3>${r.name}</h3><div class="meta">${r.address}</div></div><span class="badge ${i.freshness}">${statusLabel(i.freshness)}</span></div><span class="model">${modelLabel(r.model)}</span><div class="confirmation-line"><b>${i.supportive.length}</b> confirmation${i.supportive.length === 1 ? "" : "s"} · Last checked ${dateLabel(i.last)}</div></article>`;
+        return `<article class="card" data-id="${r.id}"><div class="card-top"><div><div class="meta">${r.neighbourhood}</div><h3>${r.name}</h3><div class="meta">${r.address}</div></div><span class="badge ${i.freshness}">${statusLabel(i.freshness)}</span></div><span class="model">${modelLabel(r.model)}</span><div class="confirmation-line"><b>${i.supportive.length}</b> confirmation${i.supportive.length === 1 ? "" : "s"} · Last checked ${dateLabel(i.last)}</div><div class="card-actions"><a class="btn-outline" href="${directionsUrl(r)}" target="_blank" rel="noopener">Get directions</a><button type="button" class="btn-outline">See menu</button></div></article>`;
       })
       .join("") || '<div class="card">No matching places.</div>';
   markers.forEach((m) => m.remove());
@@ -144,6 +151,9 @@ function render() {
   $$(".card[data-id]").forEach(
     (c) => (c.onclick = () => openPlace(c.dataset.id)),
   );
+  $$(".card-actions a, .card-actions button").forEach(
+    (el) => (el.onclick = (e) => e.stopPropagation()),
+  );
 }
 function openPlace(id) {
   const r = restaurants.find((x) => x.id === id),
@@ -157,7 +167,7 @@ function openPlace(id) {
     )
     .join("");
   $("#placeContent").innerHTML =
-    `<p class="eyebrow">${r.neighbourhood.toUpperCase()}</p><h2>${r.name}</h2><p>${r.address}</p><div class="detail-status"><div><b>${modelLabel(r.model)}</b><br><small>Last checked ${dateLabel(i.last)}</small></div><span class="badge ${i.freshness}">${statusLabel(i.freshness)}</span></div><div class="feedback"><button data-confirm="${r.id}">Still accurate</button><button data-change="${r.id}">This has changed</button></div><h3>Recent reports</h3><ul class="history">${history || "<li>No reports yet. Be the first to verify it.</li>"}</ul>${r.note ? `<p class="meta">${r.note}</p>` : ""}`;
+    `<p class="eyebrow">${r.neighbourhood.toUpperCase()}</p><h2>${r.name}</h2><p>${r.address}</p><div class="card-actions"><a class="btn-outline" href="${directionsUrl(r)}" target="_blank" rel="noopener">Get directions</a><button type="button" class="btn-outline">See menu</button></div><div class="detail-status"><div><b>${modelLabel(r.model)}</b><br><small>Last checked ${dateLabel(i.last)}</small></div><span class="badge ${i.freshness}">${statusLabel(i.freshness)}</span></div><div class="feedback"><button data-confirm="${r.id}">Still accurate</button><button data-change="${r.id}">This has changed</button></div><h3>Recent reports</h3><ul class="history">${history || "<li>No reports yet. Be the first to verify it.</li>"}</ul>${r.note ? `<p class="meta">${r.note}</p>` : ""}`;
   $("#placeDialog").showModal();
   $("[data-confirm]").onclick = () => confirmPlace(r.id);
   $("[data-change]").onclick = () => openChange(r.id);

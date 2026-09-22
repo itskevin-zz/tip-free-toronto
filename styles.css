@@ -423,6 +423,26 @@ form textarea {
   font-size: 13px;
   color: var(--muted);
 }
+.card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+.btn-outline {
+  border: 1px solid var(--ink);
+  background: white;
+  color: var(--ink);
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-outline:hover {
+  background: var(--cream);
+}
 .badge.fresh {
   background: var(--accent);
 }

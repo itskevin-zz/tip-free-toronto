@@ -1,4 +1,4 @@
-# Tip-Free Toronto
+# All Meat, No Tip
 
 A crowdsourced map of Toronto restaurants where tipping is not expected or service is included.
 

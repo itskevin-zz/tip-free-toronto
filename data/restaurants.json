@@ -1,18 +1,10 @@
 {
   "restaurants": [
-    {"id":"demo-1","name":"Demo Restaurant - Ossington","address":"100 Ossington Ave, Toronto, ON","neighbourhood":"Ossington","lat":43.6468,"lng":-79.4197,"model":"no-tip","note":"Demo data - replace with researched listings before launch."},
-    {"id":"demo-2","name":"Demo Kitchen - Junction","address":"300 Dundas St W, Toronto, ON","neighbourhood":"The Junction","lat":43.6652,"lng":-79.4652,"model":"service-included","note":"Demo data - replace with researched listings before launch."},
-    {"id":"demo-3","name":"Demo Cafe - Riverside","address":"700 Queen St E, Toronto, ON","neighbourhood":"Riverside","lat":43.6591,"lng":-79.3478,"model":"no-tip","note":"Demo data - replace with researched listings before launch."},
-    {"id":"demo-4","name":"Demo Bistro - Annex","address":"500 Bloor St W, Toronto, ON","neighbourhood":"The Annex","lat":43.6655,"lng":-79.4103,"model":"service-included","note":"Demo data - replace with researched listings before launch."}
+    {"id":"sarang-bloor","name":"Sarang Kitchen (Bloor)","address":"1056 Bloor St W, Toronto, ON M6H 1M3","neighbourhood":"Bloorcourt","lat":43.6608,"lng":-79.4309,"model":"not-sure"},
+    {"id":"sarang-danforth","name":"Sarang Kitchen (Danforth)","address":"774 Danforth Ave, Toronto, ON M4J 1L5","neighbourhood":"Danforth","lat":43.6779,"lng":-79.3505,"model":"not-sure"},
+    {"id":"barque-bbq","name":"Barque BBQ","address":"299 Roncesvalles Ave, Toronto, ON M6R 2M3","neighbourhood":"Roncesvalles","lat":43.6479786,"lng":-79.4494575,"model":"not-sure"},
+    {"id":"queen-garden-cafe","name":"Queen Garden Cafe","address":"771 Queen St E, Toronto, ON","neighbourhood":"Riverside","lat":43.6595,"lng":-79.3536,"model":"not-sure"},
+    {"id":"richmond-station","name":"Richmond Station","address":"1 Richmond St W, Toronto, ON M5H 3W4","neighbourhood":"Downtown","lat":43.6514808,"lng":-79.3795221,"model":"not-sure"}
   ],
-  "reports": [
-    {"id":"rep-1","restaurantId":"demo-1","status":"no-tip","evidence":"visited","date":"2026-09-18"},
-    {"id":"rep-2","restaurantId":"demo-1","status":"no-tip","evidence":"visited","date":"2026-08-03"},
-    {"id":"rep-3","restaurantId":"demo-1","status":"no-tip","evidence":"website","date":"2026-07-12","sourceUrl":"https://example.com"},
-    {"id":"rep-4","restaurantId":"demo-2","status":"service-included","evidence":"visited","date":"2026-09-12"},
-    {"id":"rep-5","restaurantId":"demo-2","status":"service-included","evidence":"website","date":"2026-05-14","sourceUrl":"https://example.com"},
-    {"id":"rep-6","restaurantId":"demo-3","status":"no-tip","evidence":"visited","date":"2025-11-22"},
-    {"id":"rep-7","restaurantId":"demo-4","status":"service-included","evidence":"visited","date":"2026-04-02"},
-    {"id":"rep-8","restaurantId":"demo-4","status":"tip-expected","evidence":"visited","date":"2026-04-15"}
-  ]
+  "reports": []
 }

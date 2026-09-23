@@ -202,6 +202,15 @@ The application treats restaurant information as community-maintained data and e
 
 Seed records should be independently verified before being presented as factual information about real businesses.
 
+## Next Steps
+
+To host this for free with a real (shared, not per-browser) backend:
+
+- **Hosting**: Vercel or Netlify (free tier) for the static site.
+- **Backend**: Supabase (free tier Postgres + REST/Realtime API) in place of `localStorage`. Swap `localStorage.setItem`/`getItem` calls for `fetch` calls against Supabase so restaurants and reports are shared across users instead of stuck in one browser.
+- **Tradeoffs**: Supabase's free project pauses after a week of inactivity (auto-wakes on the next request, just a cold-start delay), and both platforms cap usage — fine for hobby traffic, not for anything serious.
+- **Alternative**: Firebase (Firestore + Hosting) — similar free-tier limits, but NoSQL instead of SQL and tighter Google lock-in.
+
 ## Licence
 
 No licence has been specified for this repository.

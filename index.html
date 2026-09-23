@@ -30,10 +30,6 @@
         </div>
         <div class="hero-stat">
           <div><strong id="placeCount">0</strong><span>places</span></div>
-          <p>
-            <b id="confirmationCount">0</b> reports from people who've been
-            there<br /><span id="updatedLabel">Updated recently</span>
-          </p>
         </div>
       </section>
       <section class="toolbar">
@@ -46,8 +42,6 @@
         </div>
         <div class="filters" id="filters">
           <button class="chip active" data-filter="all">All</button
-          ><button class="chip" data-filter="fresh">Confirmed recently</button
-          ><button class="chip" data-filter="stale">Needs verification</button
           ><button class="chip" data-filter="service-included">
             Service included</button
           ><button class="chip" data-filter="no-tip">No tipping</button>
@@ -62,8 +56,6 @@
           <div class="list-heading">
             <strong id="resultCount">0 places</strong
             ><select id="sort">
-              <option value="recent">Recently confirmed</option>
-              <option value="reports">Most reports</option>
               <option value="name">Name</option>
             </select>
           </div>
@@ -89,41 +81,6 @@
     <dialog id="placeDialog" class="modal">
       <button class="close" aria-label="Close">×</button>
       <div id="placeContent"></div>
-    </dialog>
-    <dialog id="changeDialog" class="modal form-modal">
-      <button class="close" aria-label="Close">×</button>
-      <h2>What happened when you were there?</h2>
-      <form id="changeForm">
-        <input type="hidden" name="restaurantId" /><label class="radio"
-          ><input type="radio" name="status" value="tip-expected" required />
-          Tip was expected</label
-        ><label class="radio"
-          ><input type="radio" name="status" value="tip-prompt" /> Tip prompt
-          appeared</label
-        ><label class="radio"
-          ><input type="radio" name="status" value="service-included" /> Service
-          charge was added</label
-        ><label class="radio"
-          ><input type="radio" name="status" value="other" /> Something
-          else</label
-        ><label
-          >How do you know?<select name="evidence">
-            <option value="visited">I visited recently</option>
-            <option value="website">Restaurant website</option>
-            <option value="employee">Employee</option>
-            <option value="other">Other</option>
-          </select></label
-        ><label
-          >Optional source URL<input
-            name="sourceUrl"
-            type="url"
-            placeholder="https://"
-        /></label>
-        <div class="form-actions">
-          <button type="button" class="secondary cancel">Cancel</button
-          ><button class="primary" type="submit">Submit report</button>
-        </div>
-      </form>
     </dialog>
     <dialog id="addDialog" class="modal form-modal">
       <button class="close" aria-label="Close">×</button>
@@ -151,22 +108,27 @@
             type="url"
             placeholder="https://"
         /></label>
+        <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
+        <p class="form-error" id="addFormError" hidden></p>
         <div class="form-actions">
           <button type="button" class="secondary cancel">Cancel</button
           ><button class="primary" type="submit">Add place</button>
         </div>
       </form>
+      <div id="addFormThanks" class="thanks" hidden>
+        <p>Thanks — we'll take a look and add it once we've verified it.</p>
+      </div>
     </dialog>
     <dialog id="aboutDialog" class="modal">
       <button class="close" aria-label="Close">×</button>
       <h2>This isn't a review site.</h2>
       <p>
-        It tracks one thing: whether a place expects a tip. Anyone can add a
-        restaurant, confirm the info's still right, or flag that it changed.
+        It tracks one thing: whether a place expects a tip. Anyone can suggest a
+        restaurant to add.
       </p>
       <p>
-        Reports go stale, and people disagree sometimes. When that happens we
-        show you both, not just the newest one.
+        Submissions are checked by a person before they show up on the map —
+        it's not instant, but it keeps the list accurate.
       </p>
     </dialog>
     <footer>
@@ -174,6 +136,11 @@
       ><span>Built and kept up by whoever eats there</span>
     </footer>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    ></script>
     <script src="app.js"></script>
   </body>
 </html>

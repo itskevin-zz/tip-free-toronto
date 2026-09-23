@@ -5,6 +5,5 @@
     {"id":"barque-bbq","name":"Barque BBQ","address":"299 Roncesvalles Ave, Toronto, ON M6R 2M3","neighbourhood":"Roncesvalles","lat":43.6479786,"lng":-79.4494575,"model":"not-sure"},
     {"id":"queen-garden-cafe","name":"Queen Garden Cafe","address":"771 Queen St E, Toronto, ON","neighbourhood":"Riverside","lat":43.6595,"lng":-79.3536,"model":"not-sure"},
     {"id":"richmond-station","name":"Richmond Station","address":"1 Richmond St W, Toronto, ON M5H 3W4","neighbourhood":"Downtown","lat":43.6514808,"lng":-79.3795221,"model":"not-sure"}
-  ],
-  "reports": []
+  ]
 }

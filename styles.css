@@ -344,6 +344,14 @@ form textarea {
   justify-content: flex-end;
   gap: 10px;
 }
+.form-error {
+  color: #b4271f;
+  font-size: 13px;
+  margin: 0;
+}
+.thanks {
+  padding: 10px 0;
+}
 .leaflet-popup-content-wrapper {
   border-radius: 0;
 }

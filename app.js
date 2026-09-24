@@ -94,15 +94,21 @@ function bind() {
         render();
       }),
   );
-  const openAdd = () => {
+  const resetAddForm = () => {
     $("#addForm").hidden = false;
     $("#addForm").reset();
     $("#addFormError").hidden = true;
     $("#addFormThanks").hidden = true;
+    if (window.turnstile) window.turnstile.reset();
+  };
+  const openAdd = () => {
+    resetAddForm();
     $("#addDialog").showModal();
   };
   $("#addBtn").onclick = openAdd;
   $("#mapAddBtn").onclick = openAdd;
+  $("#addAnotherBtn").onclick = resetAddForm;
+  $("#thanksCloseBtn").onclick = () => $("#addDialog").close();
   $("#aboutBtn").onclick = () => $("#aboutDialog").showModal();
   $$("dialog .close").forEach(
     (b) => (b.onclick = () => b.closest("dialog").close()),
